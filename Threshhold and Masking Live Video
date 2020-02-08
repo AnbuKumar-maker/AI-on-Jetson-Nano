@@ -1,0 +1,66 @@
+import cv2
+print(cv2.__version__)
+def nothing():
+    pass
+cv2.namedWindow('Blended')
+cv2.createTrackbar('BlendValue','Blended',50,100,nothing)
+
+dispW=640
+dispH=480
+flip=2
+
+cvLogo=cv2.imread('cv.jpg')
+cvLogo=cv2.resize(cvLogo,(640,480))
+cvLogoGray=cv2.cvtColor(cvLogo,cv2.COLOR_BGR2GRAY)
+#cv2.imshow('cv Logo Gray',cvLogoGray)
+#cv2.moveWindow('cv Logo Gray',0,640)
+
+_,BGMask=cv2.threshold(cvLogoGray,225,255,cv2.THRESH_BINARY)
+#cv2.imshow('BG Mask',BGMask)
+#cv2.moveWindow('BG Mask',720,100)
+
+FGMask=cv2.bitwise_not(BGMask)
+#cv2.imshow('FG Mask',FGMask)
+#cv2.moveWindow('FG Mask',720,640)
+
+FG=cv2.bitwise_and(cvLogo,cvLogo,mask=FGMask)
+#cv2.imshow('FG',FG)
+#cv2.moveWindow('FG',720,100)
+
+
+camSet='nvarguscamerasrc !  video/x-raw(memory:NVMM),width=1088, height=924, format=NV12, framerate=28/1 ! nvvidconv flip-method='+str(flip)+' ! video/x-raw, width='+str(dispW)+', height='+str(dispH)+', format=BGRx ! videoconvert ! video/x-raw, format=BGR ! appsink'
+#cam=cv2.VideoCapture(camSet)
+cam=cv2.VideoCapture(1)
+while True:
+    ret, frame=cam.read()
+
+    BG=cv2.bitwise_and(frame,frame,mask=BGMask)
+    #cv2.imshow('BG',BG)
+    #cv2.moveWindow('BG',703,100)
+
+    compImage=cv2.add(BG,FG)
+    #cv2.imshow('compImage',compImage)
+    #cv2.moveWindow('compImage',1200,100)
+
+    BV=cv2.getTrackbarPos('BlendValue','Blended')/100
+    BV2=1-BV
+
+    Blended=cv2.addWeighted(frame,BV,cvLogo,BV2,0)
+    cv2.imshow('Blended',Blended)
+    cv2.moveWindow('Blended',1200,850)
+
+    FG2=cv2.bitwise_and(Blended,Blended,mask=FGMask)
+    #cv2.imshow('FG2',FG2)
+    #cv2.moveWindow('FG2',1200,850)
+
+    compFinal=cv2.add(BG,FG2)
+    #cv2.imshow('compFinal',compFinal)
+    #cv2.moveWindow('compFinal',1200,850)
+
+
+    cv2.imshow('nanoCam',frame)
+    cv2.moveWindow('nanoCam',0,100)
+    if cv2.waitKey(1)==ord('q'):
+        break
+cam.release()
+cv2.destroyALLWindows()
