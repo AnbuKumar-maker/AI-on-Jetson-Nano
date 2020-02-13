@@ -1,0 +1,7 @@
+STEP 1 - Put the below command in Linux terminal
+curl -L https://github.com/toolboc/vscode/releases/download/1.32.3/code-oss_1.32.3-arm64.deb -o code-oss_1.32.3-arm64.deb
+
+
+STEP 2 – Put the below command in Linux terminal
+$ sudo dpkg -i code-oss_1.32.3-arm64.deb
+
