@@ -1,0 +1,11 @@
+Step 1 - Install curl package to support Visual Studio IDE on Jetson Nano, run the below command
+
+$sudo apt-get instal curl
+
+Step 2 - Install Visual Studio package using Github by executing below command
+
+curl -L https://github.com/toolboc/vscode/releases/download/1.32.3/code-oss_1.32.3-arm64.deb -o code-oss_1.32.3-arm64.deb
+
+Step 3 - After installing the above, run the below command
+
+sudo dpkg -i code-oss_1.32.3-arm64.deb
