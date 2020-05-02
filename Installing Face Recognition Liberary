@@ -1,0 +1,95 @@
+Step 1 – Run the below command in terminal, one command at a time
+
+sudo apt-get install cmake libopenblas-dev liblapack-dev libjpeg-dev
+
+git clone https://github.com/JetsonHacksNano/installSwapfile
+
+./installSwapfile/installSwapfile.sh
+
+
+
+Step 2 – Reboot the system by running the command – sudo reboot now, after the reboot, run the following command to install few more packages. Run one command at a time.
+
+wget http://dlib.net/files/dlib-19.17.tar.bz2
+
+tar jxvf dlib-19.17.tar.bz2
+
+cd dlib-19.17
+
+ls
+
+cd dlib
+
+ls
+
+cd cuda
+
+ls
+
+gedit cudnn_dlibapi.cpp
+
+
+Step 3 – After running the last command from above “gedit cudnn_dlibapl.cpp a text editor will open up.
+
+
+Step 4 – In the text editor, click “Search” and find the code line “forward_algo = forward_best_algo;”
+
+Go to the code line and comment out by adding // at the begening of the code line like this “//forward_algo = forward_best_algo;”
+
+Click on “Save” button on the text editor and close the window
+
+
+
+Step 5 – Go the command line under dlib-19.19dlib/cuda and run the below command
+
+cd cuda
+
+ls
+
+cd ..
+
+ls
+
+cd ..
+
+sudo python3 setup.py install
+
+After running the last command from above step-5, it will take about 30-45 minutes to install the entire package, DO NOT  close the terminal, wait till completion.
+
+
+Step 6 – Installing Face Recognition Package, run the below command under  ~/dlib-19.17$ 
+
+sudo pip3 install face_recognition
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
