@@ -1,0 +1,33 @@
+                      Instructions - Installing PCA9685 Motor Driver in Jetson Nano
+
+Step 1:
+•	Connect VCC Pin of PCA9685 to 3.3 Volt Pin of Jetson Nano (Pin 1 upper outside)
+•	Connect GND Pin of PCA9685 to Jetson Nano GND (Row 3, inside pin)
+•	Connect SDA Pin of PCA9685 to Jetson Nano Pin 3 (Row 2, outside pin)
+•	Connect SCL Pin of PCA9685 to Jetson Nano Pin 5 (Row 3, outside pin)
+
+Step 2:
+Run the following command one at a time in terminal to install PCA9685 driver libraries in Jetson Nano
+
+sudo apt-get install python3-pip
+sudo pip3 install adafruit-circuitpython-servokit
+sudo usermod -aG i2c anbu
+sudo groupadd -f -r gpio
+sudo usermod -a -G gpio anbu
+sudo cp /opt/nvidia/jetson-gpio/etc/99-gpio.rules /etc/udev/rules.d/
+sudo udevadm control –reload-rules && sudo udevadm trigger
+sudo reboot now
+
+Step 3: After rebooting, run the below command, after running the command you should see 20 in column 40 and 70 in column 70
+
+sudo i2cdetect -y -r 1
+
+Step 4: Open the Visual Studio IDE and input below code to move servo motor
+
+from adafruit_servokit import ServoKit
+myKit=ServoKit(channels=16)
+myKit.servo[0].angle=90
+
+
+
+
