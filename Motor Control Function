@@ -1,0 +1,68 @@
+int motorPinsLeft[6] = {13, 12, 11, 10, 9, 8};
+int motorPinsRight[6] = {7, 6, 5, 4, 3, 2};
+ 
+int maxSpeed = 255;
+int leftSpeed,rightSpeed;
+ 
+void setup() {
+  for (int i = 0; i < 6; i++) {
+    pinMode(motorPinsLeft[i], OUTPUT);
+    pinMode(motorPinsRight[i], OUTPUT);
+  }
+  Serial.begin(9600);
+}
+ 
+void moveRobot(float mySpeed, float myTurn, int type = 0, int t = 0) {
+ 
+  mySpeed *= maxSpeed;
+  myTurn *= maxSpeed;
+ 
+  //Inidividual Speeds
+  leftSpeed = int(mySpeed - myTurn);
+  rightSpeed = int(mySpeed + myTurn);
+ 
+  //Limit
+  leftSpeed = constrain(leftSpeed, -maxSpeed, maxSpeed);
+  rightSpeed = constrain(rightSpeed, -maxSpeed, maxSpeed);
+ 
+  // Send Speed
+  analogWrite(motorPinsLeft[0], abs(leftSpeed));
+  analogWrite(motorPinsLeft[5], abs(leftSpeed));
+  analogWrite(motorPinsRight[0], abs(rightSpeed));
+  analogWrite(motorPinsRight[5], abs(rightSpeed));
+ 
+  if (leftSpeed > 0) {
+    digitalWrite(motorPinsLeft[1], 1);
+    digitalWrite(motorPinsLeft[2], 0);
+    digitalWrite(motorPinsLeft[3],0);
+    digitalWrite(motorPinsLeft[4],1);
+  }
+  else{
+    digitalWrite(motorPinsLeft[1], 0);
+    digitalWrite(motorPinsLeft[2], 1);
+    digitalWrite(motorPinsLeft[3],1);
+    digitalWrite(motorPinsLeft[4],0);
+  }
+ if (rightSpeed > 0) {
+    digitalWrite(motorPinsRight[1], 1);
+    digitalWrite(motorPinsRight[2], 0);
+    digitalWrite(motorPinsRight[3],0);
+    digitalWrite(motorPinsRight[4],1);
+  }
+  else{
+    digitalWrite(motorPinsRight[1], 0);
+    digitalWrite(motorPinsRight[2], 1);
+    digitalWrite(motorPinsRight[3],1);
+    digitalWrite(motorPinsRight[4],0);
+  }
+delay(t);
+}
+ 
+void loop() {
+ 
+  moveRobot(0.2,0,0,2000);
+  moveRobot(-0.2,0,0,2000);
+  moveRobot(0,0.5,0,2000);
+  moveRobot(0,-0.5,0,2000);
+ 
+}
